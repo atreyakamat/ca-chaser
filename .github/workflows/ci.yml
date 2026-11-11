@@ -34,6 +34,7 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cachaser
       TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/cachaser
       SESSION_SECRET: ci-only-session-secret-not-used-anywhere-else
+      CRON_SECRET: ci-only-cron-secret-not-used-anywhere-else
       NEXT_PUBLIC_APP_URL: http://localhost:3100
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
