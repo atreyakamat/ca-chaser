@@ -47,7 +47,8 @@ async function Upload({ params }: { params: Promise<{ token: string }> }) {
         </p>
       ) : (
         <p className="mt-2 text-muted">
-          {pending} of {context.requests.length} still needed. Please send them by {formatDay(context.dueDate)}.
+          {pending} of {context.requests.length} still needed.{" "}
+          {context.overdue ? `They were due on ${formatDay(context.dueDate)}.` : `Please send them by ${formatDay(context.dueDate)}.`}
         </p>
       )}
       <div className="mt-6">

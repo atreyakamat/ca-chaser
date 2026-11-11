@@ -1,6 +1,6 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import type { DateString } from "@/lib/dates";
+import { todayIn, type DateString } from "@/lib/dates";
 import { inspectUpload } from "@/lib/files";
 import { asSystem, isUuid } from "./db";
 import { linkIdFromToken } from "./links";
@@ -13,14 +13,15 @@ export type UploadContext = {
   clientName: string;
   month: DateString;
   dueDate: DateString;
+  overdue: boolean;
   requests: { id: string; name: string; status: "pending" | "received"; files: string[] }[];
 };
 
-type LinkRow = { firmId: string; clientId: string; periodId: string; firmName: string; clientName: string; month: DateString; dueDate: DateString };
+type LinkRow = { timezone: string; firmId: string; clientId: string; periodId: string; firmName: string; clientName: string; month: DateString; dueDate: DateString };
 
 const LINK_QUERY = `
   select l.firm_id as "firmId", l.client_id as "clientId", l.period_id as "periodId",
-         f.name as "firmName", c.name as "clientName", p.month, p.due_date as "dueDate"
+         f.name as "firmName", f.timezone, c.name as "clientName", p.month, p.due_date as "dueDate"
     from upload_links l
     join firms f on f.id = l.firm_id
     join clients c on c.id = l.client_id
@@ -45,7 +46,7 @@ export async function loadUploadContext(token: string): Promise<UploadContext | 
         order by d.sort_order, d.name`,
       [link.clientId, link.periodId],
     );
-    return { firmName: link.firmName, clientName: link.clientName, month: link.month, dueDate: link.dueDate, requests };
+    return { firmName: link.firmName, clientName: link.clientName, month: link.month, dueDate: link.dueDate, overdue: todayIn(link.timezone) > link.dueDate, requests };
   });
 }
 

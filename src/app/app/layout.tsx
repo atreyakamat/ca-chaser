@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AccountCard } from "@/components/app/account-card";
 import { NavLinks } from "@/components/app/nav-links";
 import { site } from "@/lib/site";
+import { logout } from "@/server/actions/auth";
 
 export default function AppLayout({ children }: LayoutProps<"/app">) {
   return (
@@ -26,6 +27,11 @@ export default function AppLayout({ children }: LayoutProps<"/app">) {
           <Link href="/app" className="font-semibold tracking-tight">
             {site.name}
           </Link>
+          <form action={logout}>
+            <button type="submit" className="rounded-md px-2 py-1 text-sm text-muted hover:text-foreground">
+              Sign out
+            </button>
+          </form>
         </div>
         <Suspense>
           <NavLinks orientation="horizontal" />

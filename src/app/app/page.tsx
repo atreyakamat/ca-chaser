@@ -207,14 +207,16 @@ export default async function DashboardPage({ searchParams }: PageProps<"/app">)
                     <div className="flex items-center justify-end gap-1">
                       {row.pending > 0 && <NudgeButton clientId={row.clientId} periodId={period.id} clientName={row.clientName} />}
                       {row.linkId && <CopyLinkButton url={uploadUrl(row.linkId)} clientName={row.clientName} />}
-                      <ButtonLink
-                        href={`/api/export?client=${row.clientId}&period=${period.id}`}
-                        variant="ghost"
-                        size="sm"
-                        aria-label={`Download ${row.clientName}'s files as a ZIP`}
-                      >
-                        <Download aria-hidden /> ZIP
-                      </ButtonLink>
+                      {Object.keys(row.cells).length > row.pending && (
+                        <ButtonLink
+                          href={`/api/export?client=${row.clientId}&period=${period.id}`}
+                          variant="ghost"
+                          size="sm"
+                          aria-label={`Download ${row.clientName}'s files as a ZIP`}
+                        >
+                          <Download aria-hidden /> ZIP
+                        </ButtonLink>
+                      )}
                     </div>
                   </td>
                 </tr>
