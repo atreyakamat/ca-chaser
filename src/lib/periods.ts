@@ -37,11 +37,13 @@ export function activePeriodMonth(today: DateString, s: Schedule): DateString {
   return periodDates(previous, s).requestDate <= today ? previous : addMonths(today, -2);
 }
 
+export type PeriodDates = { requestDate: DateString; dueDate: DateString };
+
 /** Every date a scheduled message goes out for a period, in order. */
-export function reminderSchedule(month: DateString, s: Schedule): { date: DateString; kind: ReminderKind }[] {
-  const { requestDate, dueDate } = periodDates(month, s);
+export function reminderSchedule(period: PeriodDates, offsets: readonly number[]): { date: DateString; kind: ReminderKind }[] {
+  const { requestDate, dueDate } = period;
   const byDate = new Map<DateString, ReminderKind>([[requestDate, "request"]]);
-  for (const offset of s.offsets) {
+  for (const offset of offsets) {
     const date = addDays(dueDate, -offset);
     if (date > requestDate && date <= dueDate && !byDate.has(date)) byDate.set(date, "followup");
   }
@@ -50,6 +52,9 @@ export function reminderSchedule(month: DateString, s: Schedule): { date: DateSt
 }
 
 /** What, if anything, is scheduled to go out today for a period. */
-export function scheduledKind(today: DateString, month: DateString, s: Schedule): ReminderKind | null {
-  return reminderSchedule(month, s).find((r) => r.date === today)?.kind ?? null;
+export function scheduledKind(today: DateString, period: PeriodDates, offsets: readonly number[]): ReminderKind | null {
+  return reminderSchedule(period, offsets).find((r) => r.date === today)?.kind ?? null;
 }
+
+/** Upload links stop working this many days after the due date. */
+export const LINK_GRACE_DAYS = 45;
