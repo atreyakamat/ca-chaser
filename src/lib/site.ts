@@ -9,8 +9,3 @@ export const site = {
 export function appUrl(): string {
   return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 }
-
-export function contactEmail(): string | null {
-  const value = process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim();
-  return value ? value : null;
-}
