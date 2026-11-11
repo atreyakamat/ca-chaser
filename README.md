@@ -83,3 +83,16 @@ src/server/           server-only code: db, auth, actions, queries, storage, mes
 tests/                Vitest unit and integration tests
 e2e/                  Playwright tests
 ```
+
+## Run with Docker (demo)
+
+```bash
+docker compose up --build
+```
+
+Open http://localhost:3000 and sign in with the seeded demo account: `demo@docchase.test` / `demo-password-123`.
+
+- Starts Postgres 16 and the app, applies migrations, and seeds a demo firm (8 clients, mixed progress). Seeding is skipped if the demo user already exists.
+- Messaging runs in mock mode: reminders are recorded in Activity, never sent to anyone.
+- Uploaded files and the database live in Docker volumes. `docker compose down -v` resets everything.
+- The secrets in `docker-compose.yml` are throwaway demo values. Use real ones (see `.env.example`) for anything beyond a local demo.
