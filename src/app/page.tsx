@@ -2,7 +2,7 @@ import { ArrowRight, BellRing, FileUp, LayoutGrid, Lock, Repeat, Smartphone } fr
 import { ButtonLink } from "@/components/ui/button";
 import { DashboardPreview } from "@/components/landing/dashboard-preview";
 import { WhatsAppPreview } from "@/components/landing/whatsapp-preview";
-import { contactEmail, site } from "@/lib/site";
+import { site } from "@/lib/site";
 import { formatInr, plans } from "@/lib/pricing";
 import { cn } from "@/lib/utils";
 
@@ -26,8 +26,7 @@ const faqs = [
 ] as const;
 
 export default function Home() {
-  const email = contactEmail();
-  const ctaHref = email ? `mailto:${email}?subject=${encodeURIComponent(`${site.name} early access`)}` : "#pricing";
+  const ctaHref = "/signup";
 
   return (
     <>
@@ -37,7 +36,8 @@ export default function Home() {
           <div className="flex items-center gap-1 sm:gap-2">
             <a href="#how" className="hidden rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground sm:inline">How it works</a>
             <a href="#pricing" className="hidden rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground sm:inline">Pricing</a>
-            <ButtonLink href={ctaHref} size="sm">Get early access</ButtonLink>
+            <a href="/login" className="rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground">Sign in</a>
+            <ButtonLink href="/signup" size="sm">Get started</ButtonLink>
           </div>
         </nav>
       </header>
@@ -52,7 +52,7 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <ButtonLink href={ctaHref} size="lg">
-                Get early access <ArrowRight aria-hidden />
+                Get started <ArrowRight aria-hidden />
               </ButtonLink>
               <ButtonLink href="#how" size="lg" variant="secondary">See how it works</ButtonLink>
             </div>
@@ -125,7 +125,7 @@ export default function Home() {
                     ))}
                   </ul>
                   <ButtonLink href={ctaHref} variant={plan.highlighted ? "primary" : "secondary"} className="mt-6">
-                    Get early access
+                    Get started
                   </ButtonLink>
                 </div>
               ))}
