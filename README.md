@@ -1,8 +1,30 @@
 # DocChase
 
-> Working name. Rename in `src/lib/site.ts`.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+> Open source under the MIT license. "DocChase" is a working name; rename it in `src/lib/site.ts`.
 
 Collects monthly GST and TDS documents for CA firms. Each client gets a reminder with a personal upload link, follow-ups until everything is in, and the firm sees one dashboard of what's still pending.
+
+![Dashboard: one grid of every client's documents for the month](docs/screenshots/dashboard.png)
+
+| Landing page | Client upload page (mobile) |
+| --- | --- |
+| ![Landing page](docs/screenshots/landing-step1-desktop.png) | ![Upload page on a phone](docs/screenshots/upload-page-mobile.png) |
+
+## Quick start (Docker, about 2 minutes)
+
+The fastest way to try it. Needs only Docker.
+
+```bash
+git clone https://github.com/atreyakamat/ca-chaser.git
+cd ca-chaser
+docker compose up --build
+```
+
+Open http://localhost:3000 and sign in with `demo@docchase.test` / `demo-password-123`. Details in [Run with Docker](#run-with-docker-demo).
+
+![Seeded demo firm in Docker](docs/screenshots/docker-demo-dashboard.png)
 
 ## What works
 
@@ -15,7 +37,7 @@ Collects monthly GST and TDS documents for CA firms. Each client gets a reminder
 - Reminder schedule: first request, follow-ups before the due date, two overdue reminders
 - Activity log of every reminder
 
-Not built yet: live WhatsApp sending (Meta Cloud API), billing, team invites, password reset.
+Not built yet: live WhatsApp sending (Meta Cloud API), billing, team invites, password reset, Excel import (CSV only for now).
 
 ## Stack
 
@@ -30,7 +52,7 @@ Not built yet: live WhatsApp sending (Meta Cloud API), billing, team invites, pa
 | Tests | Vitest (unit and real-Postgres integration), Playwright (end-to-end) |
 | CI / hosting | GitHub Actions, Netlify (with a scheduled function for the daily run) |
 
-## Getting started
+## Local development
 
 Requirements: Node 22+, pnpm 10, Postgres 15+.
 
@@ -96,3 +118,11 @@ Open http://localhost:3000 and sign in with the seeded demo account: `demo@docch
 - Messaging runs in mock mode: reminders are recorded in Activity, never sent to anyone.
 - Uploaded files and the database live in Docker volumes. `docker compose down -v` resets everything.
 - The secrets in `docker-compose.yml` are throwaway demo values. Use real ones (see `.env.example`) for anything beyond a local demo.
+
+## Contributing
+
+Issues and pull requests are welcome. Before opening a PR, run `pnpm lint`, `pnpm typecheck` and `pnpm test`. Never commit real client data or secrets: `.env*` files are git-ignored, and the demo seed uses made-up names, numbers and GSTINs.
+
+## License
+
+[MIT](LICENSE) © 2026 Atreya Kamat
